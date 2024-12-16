@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "8a6a626d-4347-44d0-8a16-cd7ea04a0a8a",
+		"name": "Autothentication db",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39912223"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Register new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// pm.test(\"Response status code is 201\", function () {\r",
+									"//     pm.expect(pm.response.code).to.equal(201);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response has the required fields\", function () {\r",
+									"//     const responseData = pm.response.json();\r",
+									"    \r",
+									"//     pm.expect(responseData).to.be.an('object');\r",
+									"//     pm.expect(responseData.user).to.exist.and.to.be.an('object');\r",
+									"    \r",
+									"//     const userFields = [\"id\", \"email\", \"surname\", \"title\", \"password\", \"created_at\", \"updated_at\"];\r",
+									"//     userFields.forEach(function(field) {\r",
+									"//         pm.expect(responseData.user).to.have.property(field);\r",
+									"//     });\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Email is in a valid format\", function () {\r",
+									"//     const responseData = pm.response.json();\r",
+									"    \r",
+									"//     pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/);\r",
+									"// });\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Response time is less than 500ms\", function () {\r",
+									"//   pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"marina@gmail.com\",\r\n    \"surname\": \"Filipova\",\r\n    \"title\": \"Miss\",\r\n    \"password\":\"hello\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register unique user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"  pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    const requiredFields = ['id', 'email', 'surname', 'title', 'password', 'created_at', 'updated_at'];\r",
+									"    requiredFields.forEach(field => {\r",
+									"        pm.expect(responseData).to.have.property(field);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Message is a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 300ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate unique email with timestamp\r",
+									"const timestamp = new Date().getTime();\r",
+									"pm.collectionVariables.set(\"email\", `testuser${timestamp}@example.com`);\r",
+									"\r",
+									"// Generate random surname\r",
+									"const surnames = [\"Smith\", \"Johnson\", \"Williams\", \"Brown\", \"Davis\"];\r",
+									"const randomSurname = surnames[Math.floor(Math.random() * surnames.length)];\r",
+									"pm.collectionVariables.set(\"surname\", randomSurname);\r",
+									"\r",
+									"// Generate random title\r",
+									"const titles = [\"mr\", \"ms\", \"dr\", \"mrs\", \"miss\"];\r",
+									"const randomTitle = titles[Math.floor(Math.random() * titles.length)];\r",
+									"pm.collectionVariables.set(\"title\", randomTitle);\r",
+									"\r",
+									"// Set constant password\r",
+									"const constantPassword = \"Password123!\";\r",
+									"pm.collectionVariables.set(\"password\", constantPassword);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"surname\": \"{{surname}}\",\r\n    \"title\": \"{{title}}\",\r\n    \"password\": \"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const responseJson = pm.response.json();\r",
+									"pm.collectionVariables.set(\"authToken\", responseJson.token);\r",
+									"console.log(\"Token saved:\", responseJson.token);\r",
+									"\r",
+									"pm.test(\"Response has token\", function () {\r",
+									"    pm.expect(responseJson).to.have.property(\"token\");\r",
+									"});\r",
+									"\r",
+									"// pm.test(\"Response contains token\", function () {\r",
+									"//     const jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData).to.have.property(\"token\").that.is.a(\"string\");\r",
+									"//     pm.variables.set(\"token\", jsonData.token);\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testuser1734355780769@example.com\",\r\n    \"password\":\"Password123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 300ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"User object schema validation\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.user).to.exist.and.to.be.an('object');\r",
+									"  pm.expect(responseData.user.id).to.exist.and.to.be.a('number');\r",
+									"  pm.expect(responseData.user.email).to.exist.and.to.be.a('string');\r",
+									"  pm.expect(responseData.user.surname).to.exist.and.to.be.a('string');\r",
+									"  pm.expect(responseData.user.title).to.exist.and.to.be.a('string');\r",
+									"  pm.expect(responseData.user.password).to.exist.and.to.be.a('string');\r",
+									"  pm.expect(responseData.user.created_at).to.exist.and.to.be.a('string');\r",
+									"  pm.expect(responseData.user.updated_at).to.exist.and.to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Получаем токен из коллекционных переменных\r",
+									"const authToken = pm.collectionVariables.get(\"authToken\");\r",
+									"\r",
+									"if (authToken) {\r",
+									"    // Добавляем токен в заголовок Authorization\r",
+									"    pm.request.headers.add({\r",
+									"        key: \"Authorization\",\r",
+									"        value: `Bearer ${authToken}`\r",
+									"    });\r",
+									"    console.log(\"Token added to the header:\", authToken);\r",
+									"} else {\r",
+									"    console.log(\"Token not found. Perform login again.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJvbGdhQGdtYWlsLmNvbSIsImlhdCI6MTczNDM1Mjg0NCwiZXhwIjoxNzM0MzU2NDQ0fQ.e8sJ-mV-u9jf2z8Q9dwaPBt2Y1s6nkpALt7KSl9CzuY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"testuser1734355780769@example.com\",\r\n    \"title\": \"Dr\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "surname",
+			"value": ""
+		},
+		{
+			"key": "title",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "authToken",
+			"value": ""
+		}
+	]
+}
